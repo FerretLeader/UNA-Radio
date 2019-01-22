@@ -1,3 +1,7 @@
 I'll try to put changes here
 1/21/2019
 Added changelog
+
+1/22/2019
+Added folfers for server and client
+added server.js
