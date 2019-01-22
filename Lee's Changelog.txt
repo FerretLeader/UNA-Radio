@@ -1,7 +1,11 @@
 I'll try to put changes here
 1/21/2019
+<<<<<<< HEAD
+Added changelog
+=======
 Added changelog
 
 Lee Changed clothes
 
 also his mind
+>>>>>>> parent of 18b22fb... Revert "Update Lee's Changelog.txt"
