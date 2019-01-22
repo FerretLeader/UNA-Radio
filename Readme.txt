@@ -1,2 +1,1 @@
-Test readme to make sure the github client is working
-asdf
+Client and server files for the UNA radio project
