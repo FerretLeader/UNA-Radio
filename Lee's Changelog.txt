@@ -5,3 +5,6 @@ Added changelog
 1/22/2019
 Added folfers for server and client
 added server.js
+
+1/25/2019
+Added and then promptly removed mongo related files. 
