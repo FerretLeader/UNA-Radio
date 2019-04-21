@@ -2,6 +2,7 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 const express = require('express');
 var mongojs = require('mongojs');
+
 const app = express();
 
 app.get('/', function(request, response) {  response.sendfile(__dirname + "/index.html");});  //index.html is a seperate file
@@ -12,9 +13,9 @@ MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
     if (err) throw err;
 	
 	//GET a song
-	app.get( '/server/song/', function(req, response)  {
+	app.get( '/song/', function(req, response)  {
 		try{
-			db.db("music").collection("test").aggregate([
+			db.db("music").collection("track").aggregate([
                 {
                     $sample: { 
 						size: 1 
@@ -27,12 +28,15 @@ MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 				}
             ]).toArray(function(err, results) {
                 if (err) response.send(err);
-                else response.send(results[0].filepath);
+                else response.send(results[0].filename);
             });
 		}
 		catch(err){
 			response.send("ERROR: " + err);
 		}
+		
+		
+		
 	});
 	
 	
