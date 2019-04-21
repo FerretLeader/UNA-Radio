@@ -2,6 +2,9 @@ var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 const express = require('express');
 var mongojs = require('mongojs');
+var songname = "error.mp3";  //error at first for testing purposes, should pull from database
+// TODO: Fix this!
+// sends error.mp3 the first time it gets a get request for a song
 
 const app = express();
 
@@ -14,28 +17,30 @@ MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 	
 	//GET a song
 	app.get( '/song/', function(req, response)  {
+		
+		/*
+		//set response type, etc
+		response.set('content-type', 'audio/mp3');
+		response.set('accept-ranges', 'bytes');
+		*/
+		
 		try{
-			db.db("music").collection("track").aggregate([
-                {
-                    $sample: { 
-						size: 1 
-					},
-                },
-				{
-					$project: {
-						_id: 0
+			db.db("music").collection("track").aggregate(
+				[
+					{
+						$sample: {size: 1}
 					}
-				}
-            ]).toArray(function(err, results) {
-                if (err) response.send(err);
-                else response.send(results[0].filename);
-            });
+				]
+			).toArray(function(err, res) {
+				 songname = (res[0].filename);
+			});
 		}
 		catch(err){
 			response.send("ERROR: " + err);
 		}
-		
-		
+		finally{
+			response.send(songname);
+		}
 		
 	});
 	
