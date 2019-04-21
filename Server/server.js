@@ -7,8 +7,6 @@
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 const express = require('express');
-const trackRoute = express.Router();
-const { Readable } = require('stream');
 var mongojs = require('mongojs');
 var fs = require('fs');
 var songname = "error.mp3";  //error at first for testing purposes, should pull from database
