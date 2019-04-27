@@ -44,23 +44,21 @@ MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 		response.set('accept-ranges', 'bytes');
 		
 		try{
-			db.db("music").collection("track").aggregate(
+			songname = db.db("music").collection("track").aggregate(
 				[
 					{
 						$sample: {size: 1}
 					}
 				]
 			).toArray(function(err, res) {
-				 songname = (res[0].filename);
-				 console.log(res[0].filename); //testing line, feel free to comment out if needed.
+				response.write(fs.readFileSync("audio/music/" + res[0].filename, 'binary'), 'binary');
+				response.end();
+				songname = res[0].filename;
+				console.log(res[0].filename); //testing line, feel free to comment out if needed.
 			});
 		}
 		catch(err){
 			response.send("ERROR: " + err);
-		}
-		finally{
-			response.write(fs.readFileSync("audio/music/" + songname, 'binary'), 'binary');
-			response.end();
 		}
 		
 	});
