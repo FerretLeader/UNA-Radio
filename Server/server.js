@@ -9,18 +9,6 @@ var url = "mongodb://localhost:27017/";
 const express = require('express');
 var mongojs = require('mongojs');
 var fs = require('fs');
-var songname = "error.mp3";  //error at first for testing purposes, should pull from database
-// TODO: Fix this!
-// sends error.mp3 the first time it gets a get request for a song
-//
-//
-//basic database structure: 
-//database: music
-//collection: track
-//
-//collection contents example:
-//_id:5cbbcb1abe935f01089c65a6
-//filename:"song.mp3"
 
 const app = express();
 
@@ -37,31 +25,65 @@ MongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
 	//you can modify the get request, etc and use
 	//different collections to accomidate for 
 	//different stations
-	app.get( '/song/', function(req, response)  {
+	app.get( '/station/', function(req, response)  {
 		
 		//set response type, etc
 		response.set('content-type', 'audio/mp3');
 		response.set('accept-ranges', 'bytes');
 		
 		try{
-			songname = db.db("music").collection("track").aggregate(
+			db.db("music").collection("station").aggregate(
 				[
 					{
 						$sample: {size: 1}
 					}
 				]
 			).toArray(function(err, res) {
-				response.write(fs.readFileSync("audio/music/" + res[0].filename, 'binary'), 'binary');
-				response.end();
-				songname = res[0].filename;
-				console.log(res[0].filename); //testing line, feel free to comment out if needed.
+				try{
+					response.write(fs.readFileSync("audio/station/" + res[0].filename, 'binary'), 'binary');
+					console.log(res[0].filename); //testing line, feel free to comment out if needed.
+				}
+				catch(err){
+					console.log(err);
+					response.send("ERROR: " + err);
+				}
+				//response.end();
 			});
 		}
 		catch(err){
+			console.log(err);
 			response.send("ERROR: " + err);
 		}
-		
 	});
 	
+		app.get( '/art/:songname', function(req, response)  {
+		
+		try{
+			db.db("music").collection("art").aggregate(
+				[
+					{
+						$match: {songname: {$eq: (req.params.songname) }}
+					},
+					{
+						$sample: {size: 1}
+					}
+				]
+			).toArray(function(err, res) {
+				try{
+					response.write(fs.readFileSync("audio/art/" + res[0].filename, 'binary'), 'binary');
+					console.log(res[0].filename); //testing line, feel free to comment out if needed.
+				}
+				catch(err){
+					console.log(err);
+					response.send("ERROR: " + err);
+				}
+				response.end();
+			});
+		}
+		catch(err){
+			console.log(err);
+			response.send("ERROR: " + err);
+		}
+	});
 	
 });
