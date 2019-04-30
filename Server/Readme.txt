@@ -50,3 +50,6 @@ You will need a seperate entry/doccument for every song. This may change in futu
 _id:ObjectID("5cc8849ecef64c2784a9a483")
 songname:"song1.mp3"
 filename:"81efglR0ciL._SS500_.jpg"
+
+Example URL to pull up album art:
+http://localhost:8080/art/song1.mp3
