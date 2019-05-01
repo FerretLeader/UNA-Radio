@@ -1,0 +1,4 @@
+#Tue Apr 09 18:11:08 CDT 2019
+base.0=C\:\\Users\\Lee\\Documents\\GitHub\\CS-455-01-Project--UNA-Radio\\Client\\project1\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
